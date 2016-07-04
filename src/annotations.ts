@@ -7,12 +7,10 @@ import {
 } from '@angular/core/src/util/decorators';
 
 import {
-  ComponentInstruction
-} from '@angular/router-deprecated';
-
-import {
-  CanActivate
-} from '@angular/router-deprecated/src/lifecycle/lifecycle_annotations_impl';
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot
+} from '@angular/router';
 
 import {
   Meteor
@@ -55,13 +53,8 @@ export function InjectUser(propName?: string): (cls: any) => any {
  * defined at angular/modules/@angular/router-deprecated/src/lifecycle/lifecycle_annotations_impl.ts
  * Each annotation designed to implement activation logic should extend it.
  */
-class RequireUserAnnotation extends CanActivate {
-  constructor() {
-    super(this.canProceed.bind(this));
-  }
-
-  canProceed(prev: ComponentInstruction,
-             next: ComponentInstruction) {
+class RequireUserAnnotation implements CanActivate {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return !!Meteor.user();
   }
 }
